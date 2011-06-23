@@ -7,7 +7,7 @@ Created on Jun 22, 2011
 class WordInfo:
     '''
     This class parses the data 
-    retrieved from dictionary.com
+    retrieved from web
     '''
 
     def __init__(self, dict):
