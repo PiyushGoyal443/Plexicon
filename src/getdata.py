@@ -7,7 +7,7 @@ Created on Jun 20, 2011
 def getData(word, sourceLanguage = 'en', targetLanguage = 'en'):
     '''
     Retrieves the definition of 'word'
-    from dictionary.com public api
+    from web
     '''
 
 if __name__ == '__main__':
