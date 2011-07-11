@@ -1,1 +1,20 @@
-	'Plexicon' is a desktop application of dictionary written in python
+"Plexicon" --- A desktop application of dictionary written in python with the
+	       interface implemented in pygtk
+
+ Author: Dibyendu Das
+
+ Instruction
+--------------
+	This application is web based. It takes a phrase from the user & searches
+a couple of dictionary servers through their public api, parses the retrieved
+data from json/xml format to readable format & displays in a window.
+	It currently supports two languages : English (being an international language) &
+					      Bengali (being my native language)
+
+-------------------------------------------------------------------------------------
+   You can redistribute this software and/or modify it freely under the terms of
+ the GNU General Public License version 3.
+
+ Please read ./license/COPYING for copying and (non-)warranty information,
+ & read ./INSTALL for installation.
+-------------------------------------------------------------------------------------
