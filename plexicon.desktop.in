@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Plexicon
+Comment=Check word definitions and spellings in some online dictionaries
+Exec=@prefix@/share/plexicon/src/plexicon.py
+Terminal=false
+Type=Application
+Icon=@prefix@/share/plexicon/resource/pixmap/output.png
+Categories=Python;GTK;Office;Dictionary;
+GenericName=Dictionary
+NoDisplay=false
