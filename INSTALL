@@ -1,0 +1,52 @@
+Basic Installation
+==================
+
+   These are generic installation instructions.
+
+   The `configure' shell script attempts to guess correct values for
+various system-dependent variables used during compilation.  It uses
+those values to create a `Makefile' in each directory of the package.
+Finally, it creates a shell script `config.status' that
+you can run in the future to recreate the current configuration, a file
+`config.cache' that saves the results of its tests to speed up
+reconfiguring, and a file `config.log' containing compiler output
+(useful mainly for debugging `configure').
+
+   The file `configure.in' is used to create `configure' by a program
+called `autoconf'.  You only need `configure.in' if you want to change
+it or regenerate `configure' using a newer version of `autoconf'.
+
+The simplest way to compile this package is:
+
+  1. `cd' to the directory containing the package's source code and type
+     `./configure' to configure the package for your system.  If you're
+     using `csh' on an old version of System V, you might need to type
+     `sh ./configure' instead to prevent `csh' from trying to execute
+     `configure' itself.
+
+     Running `configure' takes awhile.  While running, it prints some
+     messages telling which features it is checking for.
+     
+[N.B: This application is written fully in python. So it's needles to say that you'll need python interpretor installed on your system (I've used python 2.6 by the way). You will also require two additional python modules viz. 'pygtk' & 'pygst' (version 0.10).
+You can download those from the following links:
+         pygtk : "http://www.pygtk.org/"
+         pygst : "http://gstreamer.freedesktop.org/modules/gst-python.html"
+However if you are a debian user you can probably serch in your repository]
+
+  2. Optionally, type `make check' to run any self-tests that come with
+     the package.
+
+  3. Type `make install' as root to install the programs and any data files.(you can type 
+     "sudo make install" & enter your root password)
+
+**********************************************************************************
+******************************************************************************** |
+  4. Type `make shortcut' as root to create a desktop shortcut.(you can type   | |
+     "sudo make shortcut" & enter your root password as before)                | |
+[N.B: DO NOT omit this step as it does some permission changes to the          | | 
+      installed files other than just creating desktop shortcut. Your          | |
+      application will NOT RUN at all if you omit this step]                   | |
+                                                                               | |
+  5. To uninstall the program type "make uninstall" as root.                   | |
+                                                                               | |
+  6. To remove the desktop shortcut type "make remove-shortcut" as root.       | |
