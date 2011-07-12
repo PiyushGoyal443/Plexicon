@@ -1,0 +1,50 @@
+dnl Process this file with autoconf to produce a configure script.
+
+AC_PREREQ(2.67)
+AC_INIT(src/plexicon.py)
+AM_INIT_AUTOMAKE(plexicon, 0.1)
+AM_SANITY_CHECK
+AM_MAINTAINER_MODE
+
+home=$HOME
+user=$USER
+AC_SUBST(home)
+AC_SUBST(user)
+
+dnl check for python
+AM_PATH_PYTHON
+
+dnl check for python modules
+python -c 'import pygst' > /dev/null
+if test $? -eq 0
+  then
+    echo 'checking for python module pygst... yes'
+  else
+    AC_MSG_ERROR([You need the python module 'pygst' (version 0.10). Please read the INSTALL file.])
+fi
+python -c 'import pygtk' > /dev/null
+if test $? -eq 0
+  then
+    echo 'checking for python module pygtk... yes'
+  else
+    AC_MSG_ERROR([You need the python module 'pygtk'. Please read the INSTALL file.])
+fi
+
+AC_SUBST(PYGTK_CFLAGS)
+AC_SUBST(PYGTK_LIBS)
+
+AC_OUTPUT([Makefile
+                 src/plexicon
+                 plexicon.desktop
+                 license/Makefile
+                 resource/BlackPaintSplatter/Makefile
+                 resource/BlackSquare/Makefile
+                 resource/BlueandWhite/Makefile
+                 resource/GreySquare/Makefile
+                 resource/Makefile
+                 resource/pixmap/Makefile
+                 src/Makefile
+                 src/gui/Makefile
+                 src/lang/Makefile
+                 src/lang/bengali/Makefile
+                 src/lang/english/Makefile])
