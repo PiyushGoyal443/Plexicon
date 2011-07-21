@@ -31,6 +31,7 @@ scriptversion=2009-04-28.21; # UTC
 # ings in this Software without prior written authorization from the X Consor-
 # tium.
 #
+#
 # FSF changes to this file are in the public domain.
 #
 # Calling this script install-sh is preferred over install.sh, to prevent
