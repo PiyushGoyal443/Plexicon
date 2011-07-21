@@ -35,7 +35,7 @@ def link_clicked(link_button, text):
     parent = link_button.get_parent()
     while parent.__class__.__name__ != 'OutputBox':
         parent = parent.get_parent()
-    from gui.outputGui import SuggestionSearch
+    from gui.OutputGui import SuggestionSearch
     parent.__class__.link = SuggestionSearch.ENABLE
     parent.__class__.linkText = text
     gtk.main_quit()
