@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Plexicon
-Comment=Check word definitions and spellings in some online dictionaries
-Exec=@prefix@/share/plexicon/src/plexicon.py
+Comment=Check word definitions in online dictionaries
+Exec=@prefix@/bin/plexicon
 Terminal=false
 Type=Application
 Icon=@prefix@/share/plexicon/resource/pixmap/output.png
