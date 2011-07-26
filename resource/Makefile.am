@@ -1,5 +1,8 @@
 SUBDIRS = pixmap BlackPaintSplatter BlackSquare BlueandWhite GreySquare
 
-logodir = $(datadir)/plexicon/resource
+resourcedir = $(datadir)/plexicon/resource
 
-logo_DATA = logo.png
+resource_DATA = logo.png      \
+                starred.gif   \
+                unstarred.gif \
+                error.mp3

@@ -53,9 +53,9 @@ am__vpath_adj = case $$p in \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(logodir)"
-logoDATA_INSTALL = $(INSTALL_DATA)
-DATA = $(logo_DATA)
+am__installdirs = "$(DESTDIR)$(resourcedir)"
+resourceDATA_INSTALL = $(INSTALL_DATA)
+DATA = $(resource_DATA)
 RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
 ETAGS = etags
@@ -149,8 +149,12 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 user = @user@
 SUBDIRS = pixmap BlackPaintSplatter BlackSquare BlueandWhite GreySquare
-logodir = $(datadir)/plexicon/resource
-logo_DATA = logo.png
+resourcedir = $(datadir)/plexicon/resource
+resource_DATA = logo.png      \
+                starred.gif   \
+                unstarred.gif \
+                error.mp3
+
 all: all-recursive
 
 .SUFFIXES:
@@ -183,22 +187,22 @@ $(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-install-logoDATA: $(logo_DATA)
+install-resourceDATA: $(resource_DATA)
 	@$(NORMAL_INSTALL)
-	test -z "$(logodir)" || $(MKDIR_P) "$(DESTDIR)$(logodir)"
-	@list='$(logo_DATA)'; for p in $$list; do \
+	test -z "$(resourcedir)" || $(MKDIR_P) "$(DESTDIR)$(resourcedir)"
+	@list='$(resource_DATA)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f=$(am__strip_dir) \
-	  echo " $(logoDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(logodir)/$$f'"; \
-	  $(logoDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(logodir)/$$f"; \
+	  echo " $(resourceDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(resourcedir)/$$f'"; \
+	  $(resourceDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(resourcedir)/$$f"; \
 	done
 
-uninstall-logoDATA:
+uninstall-resourceDATA:
 	@$(NORMAL_UNINSTALL)
-	@list='$(logo_DATA)'; for p in $$list; do \
+	@list='$(resource_DATA)'; for p in $$list; do \
 	  f=$(am__strip_dir) \
-	  echo " rm -f '$(DESTDIR)$(logodir)/$$f'"; \
-	  rm -f "$(DESTDIR)$(logodir)/$$f"; \
+	  echo " rm -f '$(DESTDIR)$(resourcedir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(resourcedir)/$$f"; \
 	done
 
 # This directory's subdirectories are mostly independent; you can cd
@@ -379,7 +383,7 @@ check: check-recursive
 all-am: Makefile $(DATA)
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(logodir)"; do \
+	for dir in "$(DESTDIR)$(resourcedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-recursive
@@ -424,7 +428,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-logoDATA
+install-data-am: install-resourceDATA
 
 install-dvi: install-dvi-recursive
 
@@ -458,7 +462,7 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-logoDATA
+uninstall-am: uninstall-resourceDATA
 
 .MAKE: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) install-am \
 	install-strip
@@ -469,13 +473,13 @@ uninstall-am: uninstall-logoDATA
 	distdir dvi dvi-am html html-am info info-am install \
 	install-am install-data install-data-am install-dvi \
 	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am install-logoDATA \
-	install-man install-pdf install-pdf-am install-ps \
-	install-ps-am install-strip installcheck installcheck-am \
-	installdirs installdirs-am maintainer-clean \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-resourceDATA install-strip installcheck \
+	installcheck-am installdirs installdirs-am maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
 	pdf-am ps ps-am tags tags-recursive uninstall uninstall-am \
-	uninstall-logoDATA
+	uninstall-resourceDATA
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
