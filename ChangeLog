@@ -1,3 +1,34 @@
+2011-07-26  Dibyendu Das <dibyendu.das.in@gmail.com>
+
+	* src/database.py : New module added for database support.
+	
+	* src/path.py (ERROR_PATH): New path for the 'error.mp3' file is appended.
+	
+	* src/plexicon.py (os.makedirs): Argument changed from
+	"HOME_PATH + '/.plexicon/'" to "HOME_PATH + '/.plexicon/data/'".
+	same change for other functions.
+	
+	* src/data.py (get_definition) : Additional argument data_dict added.
+	All the other functions but parse_example, get & connect have the same change.
+	'import urllib' has been changed to 'import urllib2'
+	
+	* src/interface.py (fetch_from_web): Function 'monitor' is renamed to 'fetch_from_web'.
+	Functions such as fetch_from_database, create_notebook, page_set_thread, linked, check_suggestion, check_web_data & parse are added.
+	New imports "from database import DataBase" "from gui.favourite import Favourite".
+	
+	* src/interface.py (run) : skip_input (boolean), database_search (dictionary), notebook (list), favourite (object of Favourite class) are added.
+	
+	* src/gui/buttons.py (unrelated_change): New classes 'Query' & 'Star' are added.
+	
+	* src/gui/favourite.py : New module added to show starred words.
+	
+	* src/gui/OutputGui.py (OutputBox.show): New public class method added.
+	
+	* src/lang/english/design.py (LayOut.__update_database) : Private method added for database synchronization.
+	
+	* src/lang/bengali/design.py (LayOut.__update_database) : Private method added for database synchronization.
+	
 2011-07-14  Dibyendu Das <dibyendu.das.in@gmail.com>
 
-	* Initial import of version that went into GTK+/Gnome Application Development, first edition. All ChangeLog entries above this adapt the program to new GNOME versions, fix bugs, or otherwise enhance it.
+	* Initial import of version, first edition. 
+	* All ChangeLog entries above this adapt the program to new versions, fix bugs, or otherwise enhance it.
