@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.65)
 AC_INIT(src/plexicon.py)
-AM_INIT_AUTOMAKE(plexicon, 1.0)
+AM_INIT_AUTOMAKE(plexicon, 2.0)
 AM_SANITY_CHECK
 AM_MAINTAINER_MODE
 
@@ -27,7 +27,21 @@ if test $? -eq 0
   then
     echo 'checking for python module pygtk... yes'
   else
-    AC_MSG_ERROR([You need the python module 'pygtk'. Please read the INSTALL file.])
+    AC_MSG_ERROR([You need the python module 'pygtk' (version 2.0). Please read the INSTALL file.])
+fi
+python -c 'import sqlite3' > /dev/null
+if test $? -eq 0
+  then
+    echo 'checking for python module sqlite3... yes'
+  else
+    AC_MSG_ERROR([You need the python module 'sqlite3'. Please read the INSTALL file.])
+fi
+python -c 'import cairo' > /dev/null
+if test $? -eq 0
+  then
+    echo 'checking for python module cairo... yes'
+  else
+    AC_MSG_ERROR([You need the python module 'cairo'. Please read the INSTALL file.])
 fi
 
 AC_SUBST(PYGTK_CFLAGS)
