@@ -29,8 +29,7 @@ class WordInfo:
             word_dict['primaries'][0]['entries'] if node['type'] == 'meaning'])
         import re
         if not re.compile(r'^Error 404.a.: Word ".*" Not Found.<BR>').search(
-                                                               alt_image_data):
-            self.alt_image = alt_image_data
-        if not re.compile(r'^<!-- SHTML Wrapper - 404 Not Found -->').search(
-                                                                   image_data):
+                                                               image_data):
             self.image = image_data
+        if alt_image_data:
+            self.alt_image = alt_image_data
