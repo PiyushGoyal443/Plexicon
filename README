@@ -1,16 +1,17 @@
 "Plexicon" --- Python Lexicon
 	     
              A desktop application of dictionary written in python with the
-interface implemented in pygtk.
-******************************
+interface implemented in pygtk
 
-Version: 1.0
+********************************
+
+Version: 2.0
 Author: Dibyendu Das
 Gmail: dibyendu.das.in@gmail.com
 
-******************************
+********************************
 	Uses the Unofficial Google Dictionary API,
-dictionary.com API & Big Huge Thesaurus API.
+dictionary.com API & Big Huge Thesaurus API
 
  Instruction
 --------------
