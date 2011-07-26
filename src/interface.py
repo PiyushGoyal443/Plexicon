@@ -60,10 +60,15 @@ def check_suggestion(web_dict, flag):
         if not web_dict['suggestion']:
             flag[1] = False
             return False
-        best_match = set([web_dict['alternative suggestion'][0]])
-        best_match.add(web_dict['suggestion'][0])
-        alt_suggestion = set(web_dict['alternative suggestion'][1:])
-        suggestion = set(web_dict['suggestion'][1:])
+        best_match = set()
+        if web_dict['alternative suggestion']:
+            best_match = set([web_dict['alternative suggestion'][0]])
+            del web_dict['alternative suggestion'][0]
+        if web_dict['suggestion']:
+            best_match.add(web_dict['suggestion'][0])
+            del web_dict['suggestion'][0]
+        alt_suggestion = set(web_dict['alternative suggestion'])
+        suggestion = set(web_dict['suggestion'])
         suggestion = alt_suggestion.union(suggestion)
         for word in list(best_match):
             suggestion.discard(word)
