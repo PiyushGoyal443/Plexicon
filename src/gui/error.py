@@ -18,21 +18,23 @@ def time_out():
     scroll.set_size_request(500, 400)
     scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
     string = '<span font_desc="Times New Roman Bold 48" foreground="#ff0000" f\
-ont_family="Times New Roman">Connection\nTimed Out</span>'
+ont_family="Times New Roman">Connection\nInterrupted</span>'
     (attr, text, unused) = pango.parse_markup(string, accel_marker = u'\x00')
     label = gtk.Label()
     label.set_attributes(attr)
     label.set_text(text)
     label.set_justify(gtk.JUSTIFY_CENTER)
-    scroll.add_with_viewport(label)
+    alignment = gtk.Alignment(0, 0, 1, 1)
+    alignment.add(label)
+    scroll.add_with_viewport(alignment)
     scroll.get_child().modify_bg(gtk.STATE_NORMAL,
                                  gtk.gdk.color_parse('#ffffff'))
     return scroll
 
-def link_clicked(link_button, text):
+def linked(link, text):
     'called when link button is clicked'
 
-    parent = link_button.get_parent()
+    parent = link.get_parent()
     while parent.__class__.__name__ != 'OutputBox':
         parent = parent.get_parent()
     from gui.OutputGui import SuggestionSearch
@@ -61,8 +63,8 @@ nition Found</i></span><span font_desc="Times New Roman 16" font_family="Times\
     v_box.pack_start(label)
     link = gtk.LinkButton('')
     link.set_label(suggestion[0].lower())
-    link.connect('clicked', link_clicked, link.get_label().lower())
-    link.set_tooltip_text(link.get_label().lower())
+    link.connect('clicked', linked, link.get_label().lower())
+    link.set_tooltip_text('click to search')
     del suggestion[0]
     alignment = gtk.Alignment(0.5, 0.5, 0, 0)
     alignment.add(link)
@@ -76,8 +78,8 @@ nition Found</i></span><span font_desc="Times New Roman 16" font_family="Times\
         for text in suggestion[:end]:
             link = gtk.LinkButton('')
             link.set_label(text.lower())
-            link.connect('clicked', link_clicked, link.get_label().lower())
-            link.set_tooltip_text(link.get_label().lower())
+            link.connect('clicked', linked, link.get_label().lower())
+            link.set_tooltip_text('click to search')
             alignment = gtk.Alignment(0.0, 0.5, 0, 0)
             alignment.add(link)
             h_box.pack_start(alignment)

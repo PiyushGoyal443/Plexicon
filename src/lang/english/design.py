@@ -9,7 +9,7 @@ scroll-window widget
 '''
 
 import gtk, pango
-from gui.buttons import Speaker
+from gui.buttons import Speaker, Star
 from path import HOME_PATH
 
 class LayOut:
@@ -33,33 +33,51 @@ class LayOut:
     def play_text(self, unused_speaker, text, url = ''):
         'spells the meaning or plays the sound_file specified by the url'
 
-        if url:
-            import urllib
-            data = urllib.urlopen(url).read()
+        import urllib
+        try:
+            urllib.urlopen('http://www.google.co.in/')
+        except IOError:
+            from path import ERROR_PATH
+            data = open(ERROR_PATH).read()
         else:
-            import re
-            text = re.sub('[^a-zA-Z0-9 \t.,;\'":(){}\[\]%!?/]', '', text)
-            import tts
-            data = ''
-            while len(text) > 100:
-                data += tts.text_to_speech(text[:100])
-                text = text[100:]
-            data += tts.text_to_speech(text)
-        sound_file_path = HOME_PATH + '/.plexicon/sound.mp3'
-        sound_file = open(sound_file_path, 'wb')
-        sound_file.write(data)
-        sound_file.close()
-        import sound
-        import thread
-        thread.start_new_thread(self.__block, ())
-        if sound.play_sound_file(sound_file_path):
-            thread.start_new_thread(self.__un_block, ())
-        return True
+            if url:
+                data = urllib.urlopen(url).read()
+            else:
+                import re, tts
+                text = re.sub('[^a-zA-Z0-9 \t.,;\'":(){}\[\]%!?/]', '', text)
+                data = ''
+                while len(text) > 100:
+                    data += tts.text_to_speech(text[:100])
+                    text = text[100:]
+                data += tts.text_to_speech(text)
+        finally:
+            sound_file_path = HOME_PATH + '/.plexicon/data/sound.mp3'
+            sound_file = open(sound_file_path, 'wb')
+            sound_file.write(data)
+            sound_file.close()
+            import sound
+            import thread
+            thread.start_new_thread(self.__block, ())
+            if sound.play_sound_file(sound_file_path):
+                thread.start_new_thread(self.__un_block, ())
+            return False
+
+    def __update_database(self, star, word):
+        'updates the  database when a word is starred/unstarred'
+
+        from database import DataBase
+        import pickle
+        database = DataBase()
+        table = (len(word.query) > 1 and word.query[1] != ' ') and \
+                                    word.query[:2] or word.query[:1]
+        data = star.state == True and pickle.dumps(word) or None
+        database.update(table.lower(), (word.query.lower(), data, 'english'))
+        database.close()
 
     def __call__(self):
         return self.scroll
 
-    def __init__(self, word, theme_index):
+    def __init__(self, word, theme_index, star_state = False):
         self.scroll = gtk.ScrolledWindow()
         self.scroll.set_size_request(500, 400)
         self.scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
@@ -80,6 +98,9 @@ class LayOut:
                                       yscale = 0.0)
             h_box = gtk.HBox(spacing = 10)
             label.set_attributes(attr)
+            unused = gtk.Label('')
+            unused.set_selectable(True)
+            label.set_selectable(True)
             label.set_text(default_text)
             height = width = not theme_index and 60 or 32
             speaker = Speaker(theme_index, width, height)
@@ -91,6 +112,10 @@ class LayOut:
                 speaker_id = speaker.connect("speaker_on", self.play_text,
                                              part.word)
             self.__block_list.append((speaker, speaker_id))
+            star = Star(star_state)
+            star.connect("starred", self.__update_database, word)
+            h_box.pack_start(unused)
+            h_box.pack_start(star())
             h_box.pack_start(label)
             h_box.pack_start(speaker())
             alignment.add(h_box)
@@ -143,6 +168,7 @@ sub> ' + tense + '</sub></i></span></span>    '
                                                         accel_marker = u'\x00')
                 label = gtk.Label()
                 label.set_attributes(attr)
+                label.set_selectable(True)
                 label.set_text(default_text)
                 alignment = gtk.Alignment(xalign = 0.0, yalign = 0.0,
                                           xscale = 0.0, yscale = 0.0)
@@ -163,6 +189,7 @@ sub> ' + tense + '</sub></i></span></span>    '
                     alignment = gtk.Alignment(xalign = 0.0, yalign = 0.5,
                                               xscale = 0.0, yscale = 0.0)
                     label.set_attributes(attr)
+                    label.set_selectable(True)
                     label.set_text(default_text)
                     height = width = not theme_index and 28 or 18
                     speaker = Speaker(theme_index, width, height, 0, 0)
@@ -188,6 +215,7 @@ an  foreground="#984BE2">').replace('</em>', '</span></u></i>')
                                                 string, accel_marker = u'\x00')
                         label = gtk.Label()
                         label.set_attributes(attr)
+                        label.set_selectable(True)
                         label.set_text(default_text)
                         alignment = gtk.Alignment(xalign = 0.0, yalign = 0.0,
                                                   xscale = 0.0, yscale = 0.0)
@@ -205,6 +233,7 @@ foreground="#984BE2">' + part.word.lower() + '</span></u></i>')
                                                         accel_marker = u'\x00')
                 label = gtk.Label()
                 label.set_attributes(attr)
+                label.set_selectable(True)
                 label.set_text(default_text)
                 alignment = gtk.Alignment(xalign = 0.0, yalign = 0.0,
                                           xscale = 0.0, yscale = 0.0)

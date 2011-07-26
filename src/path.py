@@ -10,6 +10,8 @@ BASE_PATH = os.path.abspath(os.path.join(os.path.realpath(
                        os.path.dirname(sys.argv[0])), '..'))
 HOME_PATH = os.getenv("HOME")
 LICENSE_PATH = os.path.abspath(os.path.join(BASE_PATH, './license/COPYING'))
+FAVOURITE_ICON_PATH = os.path.abspath(os.path.join(BASE_PATH,
+                            './resource/pixmap/favourite.png'))
 ABOUT_LOGO_PATH = os.path.abspath(os.path.join(BASE_PATH,
                             './resource/pixmap/about.png'))
 OUTPUT_ICON_PATH = os.path.abspath(os.path.join(BASE_PATH,
@@ -18,3 +20,5 @@ INPUT_ICON_PATH = os.path.abspath(os.path.join(BASE_PATH,
                             './resource/pixmap/input.png'))
 OUTPUT_LOGO_PATH = os.path.abspath(os.path.join(BASE_PATH,
                                     './resource/logo.png'))
+ERROR_PATH = os.path.abspath(os.path.join(BASE_PATH,
+                                    './resource/error.mp3'))

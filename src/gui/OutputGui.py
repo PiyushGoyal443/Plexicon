@@ -5,9 +5,8 @@ The output interface module
 '''
 
 import gtk, buttons
-from path import LICENSE_PATH, ABOUT_LOGO_PATH, OUTPUT_LOGO_PATH
-from path import OUTPUT_ICON_PATH
-
+from path import LICENSE_PATH, ABOUT_LOGO_PATH, OUTPUT_LOGO_PATH, \
+OUTPUT_ICON_PATH
 
 class ExitState:
     'used as enum type to return exit status'
@@ -52,7 +51,7 @@ class OutputBox(gtk.Window):
 
         self.__about_dialogue = gtk.AboutDialog()
         self.__about_dialogue.set_name('Plexicon')
-        self.__about_dialogue.set_version('1.0')
+        self.__about_dialogue.set_version('2.0')
         self.__about_dialogue.set_copyright('(c) 2011-2012 Dibyendu Das')
         self.__about_dialogue.set_comments('Look up words in online dictionari\
 es')
@@ -69,7 +68,12 @@ l.com>', ])
         self.__about_dialogue.run()
         self.__about_dialogue.destroy()
 
-    def __init__(self, widget, theme_index):
+    def show(self, unused_query_button, notebook, favourite):
+        'shows the window containing favourite words'
+
+        favourite.show(notebook)
+
+    def __init__(self, widget, theme_index, notebook, favourite):
         super(OutputBox, self).__init__()
         button_box = gtk.HBox()
         button_box.set_size_request(500, 40)
@@ -91,8 +95,17 @@ l.com>', ])
         info_button.set_tooltip('<span font_desc="Sans 10"><sub>  about\n</sub\
 ><i><b><span font_desc="Sans 10" foreground="#0000ff"><sup>plexicon</sup></spa\
 n></b></i></span>')
+        query_button = buttons.Query(theme_index, 40, 40)
+
+        query_button.connect("query", self.show, notebook, favourite)
+
+        query_button.set_tooltip('<span font_desc="Sans 10"><sub>    view\n\
+</sub><sup>favourites</sup></span>')
+        button_box.pack_start(query_button())
         button_box.pack_start(info_button())
         fixed.put(button_box, 0, 0)
+        widget.set_border_width(2)
+        widget.get_child().get_child().set_border_width(8)
         fixed.put(widget, 0, 44)
         image = gtk.Image()
         image.set_from_pixbuf(logo)

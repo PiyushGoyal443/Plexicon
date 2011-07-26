@@ -115,11 +115,10 @@ class WordInfo:
     of a particular word
     '''
 
-    query = ''
-    targetLanguage = 'English'
-    parts_of_speeches = []
     def __init__(self, word_dict, alt_definition, syn_dict):
-        self.__class__.query = word_dict['query']
+        self.query = word_dict['query']
+        self.targetLanguage = 'English'
+        self.parts_of_speeches = []
         if not word_dict.has_key('primaries'):
             if syn_dict is None:
                 if alt_definition != {}:

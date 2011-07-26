@@ -49,8 +49,7 @@ class InputBox(gtk.Window):
                                 [self.combo_box.get_active_text()]
         self.emit('destroy')
 
-    def __init__(self, theme_index, default_text = '', default_language = 0,
-                 editable = True):
+    def __init__(self, theme_index, default_text = '', default_language = 0):
         super(InputBox, self).__init__()
         self.set_size_request(280, 34)
         icon = gtk.gdk.pixbuf_new_from_file(INPUT_ICON_PATH).scale_simple(48,
@@ -61,7 +60,6 @@ class InputBox(gtk.Window):
         self.__text = default_text
         self.__cur = len(default_text)
         entry = gtk.Entry()
-        entry.set_editable(editable)
         entry.set_text(default_text)
         entry.set_size_request(180, 34)
         entry.add_events(gtk.gdk.KEY_RELEASE_MASK)
@@ -81,7 +79,7 @@ ess <i><b>ESC</b></i> to exit</sub>')
         search_button.set_tooltip('click to search')
         h_box.pack_start(search_button())
         self.add(h_box)
-        entry.connect("key-release-event", self.on_key_release, editable)
+        entry.connect("key-release-event", self.on_key_release)
         entry.connect("button-release-event", self.on_button_release)
         self.connect("destroy", gtk.main_quit)
         self.set_focus(entry)
@@ -93,7 +91,7 @@ ess <i><b>ESC</b></i> to exit</sub>')
 
         self.__cur = widget.get_position()
 
-    def on_key_release(self, widget, event, editable):
+    def on_key_release(self, widget, event):
         'called on key-release event'
 
         if event.keyval == gtk.keysyms.Escape:
@@ -110,12 +108,11 @@ ess <i><b>ESC</b></i> to exit</sub>')
             self.__cur = widget.get_position()
             return
         else:
-            if editable:
-                if event.keyval < 256:
-                    key = chr(event.keyval)
-                    if key == ' ' or key.isalpha() or key == "'":
-                        self.__text = self.__text[:self.__cur] + key + \
+            if event.keyval < 256:
+                key = chr(event.keyval)
+                if key == ' ' or key.isalpha() or key == "'":
+                    self.__text = self.__text[:self.__cur] + key + \
                                       self.__text[self.__cur:]
-                        self.__cur += 1
-                widget.set_text(self.__text)
-                widget.set_position(self.__cur)
+                    self.__cur += 1
+            widget.set_text(self.__text)
+            widget.set_position(self.__cur)
