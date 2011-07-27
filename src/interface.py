@@ -28,7 +28,8 @@ def check_web_data(web_dict, language, flags):
                 flags[1] = False
                 return False
     else:
-        if web_dict.has_key('image') and web_dict.has_key('alternative image'):
+        if web_dict.has_key('definition') and web_dict.has_key('image') \
+           and web_dict.has_key('alternative image'):
             flags[1] = False
             return False
     return True
