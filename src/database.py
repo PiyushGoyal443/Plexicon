@@ -17,6 +17,7 @@ class DataBase:
         import sqlite3 as sqlite
         from path import HOME_PATH
         self.__connection = sqlite.connect(HOME_PATH + '/.plexicon/words.db')
+        self.__connection.text_factory = str
         self.__cursor = self.__connection.cursor()
 
     def __create(self, table):
