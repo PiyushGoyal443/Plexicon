@@ -171,8 +171,11 @@ def get_alt_def(data_dict, word):
     for entry_node in entry_list:
         part_of_speech_list = entry_node.getElementsByTagName('partofspeech')
         for partofspeech_node in part_of_speech_list:
-            text = partofspeech_node.attributes[partofspeech_node.attributes.\
-                                               keys()[0]].value.lower()
+            if partofspeech_node.attributes.keys():
+                text = partofspeech_node.attributes[partofspeech_node.\
+                                    attributes.keys()[0]].value.lower()
+            else:
+                text = 'abbreviation'
             import re
             if re.compile(r'[(].*[)]').search(text) is not None:
                 text = re.sub(r' .*$', '', re.sub(r'[(].*[)]', '', text))
