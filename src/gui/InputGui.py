@@ -25,8 +25,8 @@ def strip_space(data):
         else:
             count += 1
             if count == 1:
-                word += ' '
-    if word[len(word) - 1] == ' ':
+                word += '+'
+    if word[len(word) - 1] == '+':
         word = word[0:len(word) - 1]
     return word
 
