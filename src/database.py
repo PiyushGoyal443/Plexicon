@@ -23,20 +23,20 @@ class DataBase:
     def __create(self, table):
         'creates tables'
 
-        query = "CREATE TABLE IF NOT EXISTS %s(word TEXT UNIQUE, \
+        query = "CREATE TABLE IF NOT EXISTS [%s](word TEXT UNIQUE, \
 english TEXT DEFAULT NULL, bengali TEXT DEFAULT NULL)" % (table)
         self.__cursor.execute(query)
 
     def __insert(self, table, values):
         'inserts words information into a table'
 
-        query = "INSERT INTO %s(word) VALUES(?)" % (table)
+        query = "INSERT INTO [%s](word) VALUES(?)" % (table)
         self.__cursor.execute(query, (values,))
 
     def __drop(self, table):
         'drops an empty table from the database'
 
-        query = "DROP TABLE %s" % (table)
+        query = "DROP TABLE [%s]" % (table)
         self.__cursor.execute(query)
 
     def update(self, table, values):
@@ -48,22 +48,22 @@ english TEXT DEFAULT NULL, bengali TEXT DEFAULT NULL)" % (table)
         if not row:
             self.__create(table)
 
-        query = 'SELECT word FROM %s WHERE word=?' % (table)
+        query = 'SELECT word FROM [%s] WHERE word=?' % (table)
         self.__cursor.execute(query, (values[0],))
         row = self.__cursor.fetchone()
         if not row:
             self.__insert(table, values[0])
 
         if values[2] == 'english':
-            query = "UPDATE %s SET %s=? WHERE word=?" % (table, 'english')
+            query = "UPDATE [%s] SET %s=? WHERE word=?" % (table, 'english')
         else:
-            query = "UPDATE %s SET %s=? WHERE word=?" % (table, 'bengali')
+            query = "UPDATE [%s] SET %s=? WHERE word=?" % (table, 'bengali')
         self.__cursor.execute(query, (values[1], values[0]))
-        query = 'SELECT english, bengali FROM %s WHERE word=?' % table
+        query = 'SELECT english, bengali FROM [%s] WHERE word=?' % table
         self.__cursor.execute(query, (values[0],))
         row = self.__cursor.fetchone()
         if not row[0] and not row[1]:
-            query = 'DELETE FROM %s WHERE word=?' % table
+            query = 'DELETE FROM [%s] WHERE word=?' % table
             self.__cursor.execute(query, (values[0],))
         query = "SELECT name FROM sqlite_master WHERE type='table' AND name=?"
         self.__cursor.execute(query, (table,))
@@ -80,14 +80,14 @@ english TEXT DEFAULT NULL, bengali TEXT DEFAULT NULL)" % (table)
         row = self.__cursor.fetchone()
         if not row:
             return 0
-        query = 'SELECT COUNT(*) FROM %s' % (table)
+        query = 'SELECT COUNT(*) FROM [%s]' % (table)
         self.__cursor.execute(query)
         return self.__cursor.fetchone()[0]
 
     def select(self, table):
         'select all words from a table'
 
-        query = 'SELECT word FROM %s ORDER BY word' % (table)
+        query = 'SELECT word FROM [%s] ORDER BY word' % (table)
         self.__cursor.execute(query)
         return self.__cursor.fetchall()
 
@@ -98,7 +98,7 @@ english TEXT DEFAULT NULL, bengali TEXT DEFAULT NULL)" % (table)
         self.__cursor.execute(query, (table,))
         row = self.__cursor.fetchone()
         if row:
-            query = 'SELECT * FROM %s WHERE word=?' % (table)
+            query = 'SELECT * FROM [%s] WHERE word=?' % (table)
             self.__cursor.execute(query, (word,))
             return self.__cursor.fetchone()
         return row
