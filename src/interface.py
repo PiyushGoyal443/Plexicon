@@ -189,7 +189,7 @@ def linked(link, favourite , database_search):
 def page_set_thread(page_dict, index, favourite, database_search):
     'each such 26 threads will create the 26 pages of the notebook'
 
-    h_box = gtk.HBox()
+    h_box = gtk.HBox(False, 20)
     v_box = gtk.VBox()
     h_box.pack_start(v_box)
     table = chr(ord('a') + index)
@@ -197,19 +197,14 @@ def page_set_thread(page_dict, index, favourite, database_search):
     count = 0
     if database.row_count(table):
         words = database.select(table)
-        for word in words:
-            count += 1
-            link = gtk.LinkButton('')
-            link.set_label(word[0])
-            link.connect('clicked', linked, favourite, database_search)
-            link.set_tooltip_text('click to search')
-            alignment = gtk.Alignment(0, 0.5, 0, 0)
-            alignment.add(link)
-            v_box.pack_start(alignment)
-            if count >= 25:
-                count -= 25
-                v_box = gtk.VBox()
-                h_box.pack_start(v_box)
+        count += 1
+        link = gtk.LinkButton('')
+        link.set_label(words[0][0])
+        link.connect('clicked', linked, favourite, database_search)
+        link.set_tooltip_text('click to search')
+        alignment = gtk.Alignment(0, 0.5, 0, 0)
+        alignment.add(link)
+        v_box.pack_start(alignment)
     for number in range(26):
         if database.row_count(table + chr(ord('a') + number)):
             words = database.select(table + chr(ord('a') + number))
@@ -224,8 +219,10 @@ def page_set_thread(page_dict, index, favourite, database_search):
                 v_box.pack_start(alignment)
                 if count >= 25:
                     count -= 25
+                    alignment = gtk.Alignment(0, 0, 0, 0)
                     v_box = gtk.VBox()
-                    h_box.pack_start(v_box)
+                    alignment.add(v_box)
+                    h_box.pack_start(alignment)
     database.close()
     alignment = gtk.Alignment(0, 0, 0, 0)
     alignment.add(h_box)
