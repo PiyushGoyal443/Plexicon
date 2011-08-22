@@ -22,11 +22,11 @@ Requirement
 Instruction
 ----------
    This application is web based. It takes a word from the user & searches  
-a couple of dictionary servers through their public APIs, parses the  
+a couple of dictionary servers through their public `API`s, parses the  
 retrieved data from `json/xml` format to readable format & displays in a window.  
 It currently supports two languages :  
 
-        **English** (being an international language)
+        English (being an international language)
         Bengali (being my native language)
 
 Installation & (Non-)Warranty
