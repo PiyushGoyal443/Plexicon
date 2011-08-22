@@ -1,14 +1,14 @@
 Plexicon
 =========
-   ***Python Lexicon***  
-   A desktop application of dictionary written in ***python*** with the interface  
-   implemented in `pygtk`
+-   ***Python Lexicon***  
+-  A desktop application of dictionary written in ***python*** with the  
+   interface implemented in `pygtk`
 
         Version: 2.0
         Author: Dibyendu Das
         Gmail: dibyendu.das.in@gmail.com
 
-   It uses the `Unofficial Google Dictionary API`, `dictionary.com API` &  
+-  It uses the `Unofficial Google Dictionary API`, `dictionary.com API` &  
    `Big Huge Thesaurus API`.
 
 Requirement
