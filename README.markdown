@@ -1,15 +1,15 @@
 Plexicon
 =========
 -   ***Python Lexicon***  
--  A desktop application of dictionary written in ***python*** with the  
-   interface implemented in `pygtk`
+-   A desktop application of dictionary written in ***python*** with the  
+    interface implemented in `pygtk`
 
-        Version: 2.0
-        Author: Dibyendu Das
-        Gmail: dibyendu.das.in@gmail.com
+            Version: 2.0
+            Author: Dibyendu Das
+            Gmail: dibyendu.das.in@gmail.com
 
--  It uses the `Unofficial Google Dictionary API`, `dictionary.com API` &  
-   `Big Huge Thesaurus API`.
+-   It uses the `Unofficial Google Dictionary API`, `dictionary.com API` &  
+    `Big Huge Thesaurus API`.
 
 Requirement
 ----------
@@ -34,5 +34,5 @@ Installation & (Non-)Warranty
 -	You can redistribute this software and/or modify it freely under the terms of  
 the `GNU General Public License version 3`.
 
--	Please read `./license/COPYING` for copying and (non-)warranty information,  
+-	Please read `./license/COPYING` for copying and ***(non-)***warranty information,  
 & read `./INSTALL` for installation.
