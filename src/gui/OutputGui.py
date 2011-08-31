@@ -93,12 +93,10 @@ l.com>', ])
         info_button = buttons.Info(theme_index, 40, 40)
         info_button.connect("info", self.__about)
         info_button.set_tooltip('<span font_desc="Sans 10"><sub>  about\n</sub\
-><i><b><span font_desc="Sans 10" foreground="#0000ff"><sup>plexicon</sup></spa\
-n></b></i></span>')
+><i><span font_desc="Sans bold 10" foreground="#0000ff"><sup>Plexicon</sup></s\
+pan></i></span>')
         query_button = buttons.Query(theme_index, 40, 40)
-
         query_button.connect("query", self.show, notebook, favourite)
-
         query_button.set_tooltip('<span font_desc="Sans 10"><sub>    view\n\
 </sub><sup>favourites</sup></span>')
         button_box.pack_start(query_button())

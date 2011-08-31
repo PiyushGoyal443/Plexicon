@@ -8,28 +8,6 @@ import gtk
 from buttons import Search
 from path import INPUT_ICON_PATH
 
-def strip_space(data):
-    'strips out any white space from a string'
-
-    count = 0
-    while count < len(data) and data[count] == ' ':
-        count += 1
-    if count == len(data) :
-        return ''
-    data = data[count:]
-    word = ''
-    for i in range(len(data)):
-        if data[i] != ' ':
-            word += data[i]
-            count = 0
-        else:
-            count += 1
-            if count == 1:
-                word += '+'
-    if word[len(word) - 1] == '+':
-        word = word[0:len(word) - 1]
-    return word
-
 class InputBox(gtk.Window):
     '''
     Object of this class holds the
@@ -38,13 +16,14 @@ class InputBox(gtk.Window):
 
     query = ''
     target = ''
+    valid_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' "
 
     def __search(self, unused_search_button, entry):
         'returns word to search for from the input widget'
 
         if entry.get_text() == '':
             return False
-        self.__class__.query = strip_space(entry.get_text().lower())
+        self.__class__.query = entry.get_text().lower()
         self.__class__.target = {'English': 'en', 'Bengali': 'bn'}\
                                 [self.combo_box.get_active_text()]
         self.emit('destroy')
@@ -79,19 +58,27 @@ ess <i><b>ESC</b></i> to exit</sub>')
         search_button.set_tooltip('click to search')
         h_box.pack_start(search_button())
         self.add(h_box)
-        entry.connect("key-release-event", self.on_key_release)
-        entry.connect("button-release-event", self.on_button_release)
+        entry.connect("key-release-event", self.__on_key_release)
+        entry.connect("button-release-event", self.__on_button_release)
+        entry.connect_after("paste-clipboard", self.__on_paste_text)
         self.connect("destroy", gtk.main_quit)
         self.set_focus(entry)
         self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse('#ffffff'))
         self.show_all()
 
-    def on_button_release(self, widget, unused_event):
+    def __on_paste_text(self, entry):
+        'called on pasting text '
+
+        self.__text = entry.get_text()
+        self.__cur = entry.get_position()
+        return False
+
+    def __on_button_release(self, widget, unused_event):
         'called on mouse button-release event'
 
         self.__cur = widget.get_position()
 
-    def on_key_release(self, widget, event):
+    def __on_key_release(self, widget, event):
         'called on key-release event'
 
         if event.keyval == gtk.keysyms.Escape:
@@ -99,20 +86,25 @@ ess <i><b>ESC</b></i> to exit</sub>')
             self.emit("destroy")
         elif event.keyval == gtk.keysyms.Return:
             return self.__search(None, widget)
+        if event.keyval < 256 and chr(event.keyval) in self.__class__.valid_chars:
+            if len(widget.get_text()) <= len(self.__text):
+                self.__text = widget.get_text()
+                self.__cur = widget.get_position()
+            else:
+                self.__text = self.__text[:self.__cur] + chr(event.keyval) + \
+                              self.__text[self.__cur:]
+                self.__cur += 1
+            widget.set_text(self.__text)
+            widget.set_position(self.__cur)
+        elif event.keyval in [gtk.keysyms.Left, gtk.keysyms.Right]:
+            self.__text = widget.get_text()
+            self.__cur = widget.get_position()
+            widget.set_text(self.__text)
+            widget.set_position(self.__cur)
         elif event.keyval == gtk.keysyms.BackSpace:
             self.__text = widget.get_text()
             self.__cur = widget.get_position()
-            return
-        elif event.keyval == gtk.keysyms.Left or event.keyval == \
-                                                 gtk.keysyms.Right:
-            self.__cur = widget.get_position()
-            return
         else:
-            if event.keyval < 256:
-                key = chr(event.keyval)
-                if key == ' ' or key.isalpha() or key == "'":
-                    self.__text = self.__text[:self.__cur] + key + \
-                                      self.__text[self.__cur:]
-                    self.__cur += 1
             widget.set_text(self.__text)
             widget.set_position(self.__cur)
+        return False

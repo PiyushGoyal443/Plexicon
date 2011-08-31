@@ -33,7 +33,14 @@ class LayOut:
     def play_text(self, unused_speaker, text, url = ''):
         'spells the meaning or plays the sound_file specified by the url'
 
+        import thread
+        thread.start_new_thread(self.__play, (text, url))
+        return False
+
+
+    def __play(self, text, url = ''):
         import urllib
+        self.__block()
         try:
             urllib.urlopen('http://www.google.co.in/')
         except IOError:
@@ -56,11 +63,9 @@ class LayOut:
             sound_file.write(data)
             sound_file.close()
             import sound
-            import thread
-            thread.start_new_thread(self.__block, ())
-            if sound.play_sound_file(sound_file_path):
-                thread.start_new_thread(self.__un_block, ())
-            return False
+            sound.play_sound_file(sound_file_path)
+            self.__un_block()
+        return False
 
     def __update_database(self, star, word):
         'updates the  database when a word is starred/unstarred'

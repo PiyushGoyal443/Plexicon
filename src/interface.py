@@ -163,6 +163,31 @@ def input_thread(theme_index, text, language):
 def spinner_thread(theme_index, data_dict):
     'spinner object is activated in this thread'
 
+    def strip_space(data):
+        '''
+        replaces any white space
+        from a string with a '+'
+        '''
+
+        count = 0
+        while count < len(data) and data[count] == ' ':
+            count += 1
+        if count == len(data) :
+            return ''
+        data = data[count:]
+        word = ''
+        for i in range(len(data)):
+            if data[i] != ' ':
+                word += data[i]
+                count = 0
+            else:
+                count += 1
+                if count == 1:
+                    word += '+'
+        if word[len(word) - 1] == '+':
+            word = word[0:len(word) - 1]
+        return word
+
     if InputBox.query != '':
         data_dict['text'] = InputBox.query
         data_dict['language'] = {'en': 0, 'bn': 1}[InputBox.target]
@@ -171,8 +196,8 @@ def spinner_thread(theme_index, data_dict):
         database = DataBase()
         row = database.select_row(table, InputBox.query)
         if not row or not row[{'en': 1, 'bn': 2}[InputBox.target]]:
-            data_dict['widget'] = fetch_from_web(InputBox.query,
-                                        InputBox.target, theme_index)
+            data_dict['widget'] = fetch_from_web(strip_space(InputBox.query),
+                                                 InputBox.target, theme_index)
         else:
             data_dict['widget'] = fetch_from_database(row, InputBox.target,
                                                       theme_index)
@@ -186,7 +211,7 @@ def linked(link, favourite , database_search):
     database_search['text'] = link.get_label().lower()
     return False
 
-def page_set_thread(page_dict, index, favourite, database_search):
+def page_set_thread(page_dict, index, favourite, database_search):    ## function modified
     'each such 26 threads will create the 26 pages of the notebook'
 
     h_box = gtk.HBox(False, 20)

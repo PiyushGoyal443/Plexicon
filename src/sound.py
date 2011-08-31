@@ -54,7 +54,7 @@ class PlayMp3:
         self.player.set_state(gst.STATE_PLAYING)
         while self.__playmode:
             pass
-        gtk.main_quit()
+        return True
 
 
 def play_sound_file(file_name):
@@ -67,7 +67,5 @@ def play_sound_file(file_name):
     import os
     file_name = os.path.abspath(file_name)
     sound = PlayMp3(file_name)
-    import thread
-    thread.start_new_thread(sound.play, ())
-    gtk.main()
+    sound.play()
     return True

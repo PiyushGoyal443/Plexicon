@@ -33,7 +33,14 @@ class LayOut:
     def play_text(self, unused_speaker, text, url = ''):
         'spells the meaning or plays the sound_file_path specified by the url'
 
+        import thread
+        thread.start_new_thread(self.__play, (text, url))
+        return False
+
+    def __play(self, text, url = ''):
+
         import urllib
+        self.__block()
         try:
             urllib.urlopen('http://www.google.co.in/')
         except IOError:
@@ -56,11 +63,9 @@ class LayOut:
             sound_file.write(data)
             sound_file.close()
             import sound
-            import thread
-            thread.start_new_thread(self.__block, ())
-            if sound.play_sound_file(sound_file_path):
-                thread.start_new_thread(self.__un_block, ())
-            return False
+            sound.play_sound_file(sound_file_path)
+            self.__un_block()
+        return False
 
     def __update_database(self, star, word):
         'updates database when a word is starred/unstarred'
@@ -100,9 +105,10 @@ pan>' % (word.query)
         speaker = Speaker(theme_index, width, height)
         speaker.set_tooltip('<span font_desc="Sans 10">spell</span>')
         if word.sound_url:
-            speaker.connect("speaker_on", self.play_text, '', word.sound_url)
+            speaker_id = speaker.connect("speaker_on", self.play_text, '', word.sound_url)
         else:
-            speaker.connect("speaker_on", self.play_text, word.query)
+            speaker_id = speaker.connect("speaker_on", self.play_text, word.query)
+        self.__block_list.append((speaker, speaker_id))
         star = Star(star_state)
         star.connect("starred", self.__update_database, word)
         h_box.pack_start(unused)
@@ -141,8 +147,8 @@ pan>' % (word.query)
                 import Image, math, operator
                 hist1 = Image.open(path_1).histogram()
                 hist2 = Image.open(path_2).histogram()
-                rms = math.sqrt(reduce(operator.add, map(lambda a, b: (a -
-                                      b) ** 2, hist1, hist2)) / len(hist1))
+                rms = math.sqrt(reduce(operator.add, map(lambda a, b: (a - b)
+                                            ** 2, hist1, hist2)) / len(hist1))
                 if not rms:
                     word.alt_image = ''
             if rms != 0.0:
@@ -163,15 +169,15 @@ pan>' % (word.query)
                 x_coordinate = 500 >= image.requisition.width and (500 - \
                                               image.requisition.width) / 2 or 0
                 fixed.put(image, x_coordinate, 0)
-            v_box.pack_start(gtk.Label('\n'), True, True)
+            v_box.pack_start(gtk.Label(''), True, True)
             expander = gtk.Expander()
             expander.set_use_markup(True)
             expander.set_use_underline(True)
             expander.set_tooltip_markup('<span font_desc="Sans 10"><sub>click \
 to expand</sub></span>')
-            expander.set_label('<span font_desc="Sans 10" foreground="#ff0000"\
->===============   <span foreground="#0000ff">_More Definitions</span>   =====\
-===========</span>')
+            expander.set_label('<span font_desc="Sans 10" foreground="#ff0000">\
+' + u'\u2605' * 12 + '  <span font_desc="Sans 10" foreground="#0000ff">_More De\
+finitions</span>  ' + u'\u2605' * 14 + '</span>')
             expander.set_spacing(10)
             expander.add(fixed)
             v_box.pack_start(expander)
